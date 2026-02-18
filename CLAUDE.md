@@ -39,8 +39,7 @@ Key principle: Claude describes diagrams via JSON; all XML generation is in test
 
 ### Key Libraries
 
-- `mxgraph` + `jsdom` for .drawio.svg generation (mxGraph is archived but stable; migrate to maxGraph when it reaches 1.0)
-- `elkjs` for auto-layout
+- `elkjs` for auto-layout (uses `INCLUDE_CHILDREN` for compound/grouped layouts)
 - `pako` for deflate compression in .drawio.svg embedding
 - `zod` for input validation
 - `commander` for CLI
@@ -55,7 +54,7 @@ Key principle: Claude describes diagrams via JSON; all XML generation is in test
 
 ## Resolved Decisions
 
-- mxGraph over maxGraph (stability over active maintenance for now)
+- Native XML generation (no mxGraph/maxGraph dependency)
 - Straight + orthogonal edge routing in v1 (curved/entity-relation deferred)
 - Single-page diagrams only in v1 (multi-page deferred)
 - JSON DSL is the API contract — version it if breaking changes are needed
