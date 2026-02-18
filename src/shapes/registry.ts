@@ -7,6 +7,7 @@ import { azureShapes } from "./azure.js";
 import { gcpShapes } from "./gcp.js";
 import { umlShapes } from "./uml.js";
 import { networkShapes } from "./network.js";
+import { bioShapes } from "./bio.js";
 
 const allShapes: Record<string, string> = {
   ...flowchartShapes,
@@ -15,6 +16,7 @@ const allShapes: Record<string, string> = {
   ...gcpShapes,
   ...umlShapes,
   ...networkShapes,
+  ...bioShapes,
 };
 
 export function resolveShapeStyle(typeName: string): string | null {
@@ -55,7 +57,15 @@ export function listCategories(): string[] {
   for (const key of Object.keys(allShapes)) {
     const dot = key.indexOf(".");
     if (dot > 0) {
-      categories.add(key.substring(0, dot));
+      const topLevel = key.substring(0, dot);
+      categories.add(topLevel);
+      // Add subcategories for multi-level namespaces (e.g., bio.lab-apparatus)
+      if (topLevel === "bio") {
+        const secondDot = key.indexOf(".", dot + 1);
+        if (secondDot > 0) {
+          categories.add(key.substring(0, secondDot));
+        }
+      }
     }
   }
   return [...categories].sort();
