@@ -130,7 +130,15 @@ Run `drawio-claude shapes <category>` to see all shapes in a category.
 
 ## Examples
 
-See the [`examples/`](examples/) directory for sample outputs.
+**CI/CD Pipeline** (architecture skill, LR layout, groups):
+
+![CI/CD Pipeline](examples/cicd-pipeline.drawio.svg)
+
+**TDD Flywheel** (flowchart skill, custom colors):
+
+![TDD Flywheel](examples/tdd-flywheel.drawio.svg)
+
+See [`examples/`](examples/) for more.
 
 ## Development
 
