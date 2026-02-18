@@ -1,10 +1,44 @@
 # drawio-claude
 
-Generate professional [draw.io](https://draw.io) diagrams from JSON descriptions. Outputs `.drawio.svg` files that are both valid SVG images and editable in draw.io.
+Give Claude the ability to generate professional [draw.io](https://draw.io) diagrams from natural language. Outputs `.drawio.svg` files that are both valid SVG images and editable in draw.io.
 
-Built for use with LLMs — give Claude (or any agent) the JSON schema and it can produce publication-quality architecture diagrams, flowcharts, and scientific figures.
+## Setup (give this to Claude)
 
-## Install from source
+Tell Claude Code:
+
+> Clone https://github.com/galsapir/drawio-claude.git, install dependencies, build it, and install the skills from the skills/ directory.
+
+Claude will:
+1. Clone the repo and run `pnpm install && pnpm build`
+2. Read the skills in `skills/` to learn the JSON DSL and available shapes
+3. Be ready to generate diagrams
+
+Then just ask:
+
+> Draw me an AWS architecture diagram with a load balancer, two API servers, and a database.
+
+Claude generates the JSON, pipes it through the CLI, and produces a `.drawio.svg` file you can open in draw.io, VS Code, or any browser.
+
+## What you get
+
+- **150+ shapes** — AWS, Azure, GCP, UML, flowchart, network, and 79 scientific Bioicons
+- **Auto-layout** — ELK.js handles positioning (hierarchical, force, tree, radial)
+- **5 themes** — professional, colorful, monochrome, blueprint, pastel
+- **Dual-format output** — `.drawio.svg` files render as SVG anywhere AND open in draw.io for editing
+- **Groups** — nested containers for VPCs, subnets, layers, compartments
+
+## Skills included
+
+| Skill | Use for |
+|-------|---------|
+| `drawio-flowchart` | Flowcharts, pipelines, decision trees, process flows |
+| `drawio-architecture` | Cloud architecture, system design, network diagrams |
+| `drawio-scientific` | Lab protocols, signaling pathways, CONSORT diagrams, Bioicons |
+| `drawio-uml` | Class diagrams, component diagrams, state machines |
+
+## Manual CLI usage
+
+If you want to use the CLI directly instead of through Claude:
 
 ```bash
 git clone https://github.com/galsapir/drawio-claude.git
@@ -12,21 +46,6 @@ cd drawio-claude
 pnpm install
 pnpm build
 ```
-
-Then run with:
-
-```bash
-node dist/cli.js generate input.json -o diagram.drawio.svg
-```
-
-Or link globally:
-
-```bash
-pnpm link --global
-drawio-claude generate input.json -o diagram.drawio.svg
-```
-
-## Quick start
 
 ```bash
 echo '{
@@ -42,13 +61,13 @@ echo '{
 }' | node dist/cli.js generate -o flowchart.drawio.svg
 ```
 
-Open the resulting `.drawio.svg` in draw.io, VS Code (with the draw.io extension), or any browser.
+Or link globally: `pnpm link --global` then use `drawio-claude generate ...`
 
 ## JSON input format
 
 ```jsonc
 {
-  "title": "My Diagram",          // optional, default: "Untitled Diagram"
+  "title": "My Diagram",          // optional
   "theme": "professional",         // professional | colorful | monochrome | blueprint | pastel
   "layout": {
     "algorithm": "hierarchical",   // hierarchical | force | tree | radial | box | none
@@ -97,8 +116,6 @@ All commands support `--json` for machine-readable output.
 
 ## Shape categories
 
-150+ built-in shapes across 7 categories:
-
 | Category | Examples |
 |----------|----------|
 | `flowchart` | process, decision, terminal, database, document |
@@ -110,15 +127,6 @@ All commands support `--json` for machine-readable output.
 | `bio` | 79 curated Bioicons for scientific diagrams |
 
 Run `drawio-claude shapes <category>` to see all shapes in a category.
-
-## Output formats
-
-- **`.drawio.svg`** (default) — dual-format file: valid SVG that's also editable in draw.io
-- **`.drawio`** — raw draw.io XML
-
-## Using with Claude Code
-
-This repo includes [skills](/skills) that teach Claude Code how to generate diagrams. Once installed, Claude can produce diagrams directly from natural language descriptions.
 
 ## Examples
 
