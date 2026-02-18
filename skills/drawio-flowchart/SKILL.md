@@ -3,16 +3,18 @@ name: drawio-flowchart
 description: >
   Generate flowcharts, pipelines, decision trees, and process flows as .drawio.svg files.
   Produces dual-format files: viewable as SVG anywhere AND editable in draw.io/VS Code.
+  Use when the user asks for a flowchart, process diagram, decision tree, pipeline visualization,
+  or any step-by-step process flow. Also use when asked to visualize a workflow or algorithm.
 ---
 
 # Flowchart Diagram Generation
 
-You generate flowcharts using the `drawio-claude` CLI tool. You describe the diagram as JSON, and the tool handles XML generation, auto-layout, and SVG export.
+Generate flowcharts using the `drawio-claude` CLI tool. Describe the diagram as JSON, and the tool handles XML generation, auto-layout, and SVG export.
 
 ## Quick Start
 
 ```bash
-echo '<JSON>' | npx drawio-claude generate -o diagram.drawio.svg
+echo '<JSON>' | drawio-claude generate -o diagram.drawio.svg
 ```
 
 ## JSON DSL Format

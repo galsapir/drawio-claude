@@ -3,16 +3,18 @@ name: drawio-architecture
 description: >
   Generate cloud architecture, system design, and network diagrams as .drawio.svg files.
   Supports AWS, Azure, GCP, and generic network shapes.
+  Use when the user asks for an architecture diagram, system design, infrastructure diagram,
+  cloud topology, network diagram, or any diagram involving cloud services or system components.
 ---
 
 # Architecture Diagram Generation
 
-You generate architecture diagrams using the `drawio-claude` CLI tool. Describe the system as JSON with cloud service shapes, and the tool handles layout and rendering.
+Generate architecture diagrams using the `drawio-claude` CLI tool. Describe the system as JSON with cloud service shapes, and the tool handles layout and rendering.
 
 ## Quick Start
 
 ```bash
-echo '<JSON>' | npx drawio-claude generate -o architecture.drawio.svg
+echo '<JSON>' | drawio-claude generate -o architecture.drawio.svg
 ```
 
 ## JSON DSL Format
@@ -75,6 +77,7 @@ echo '<JSON>' | npx drawio-claude generate -o architecture.drawio.svg
 | `aws.codepipeline` | CodePipeline |
 | `aws.cloudformation` | CloudFormation |
 | `aws.sagemaker` | SageMaker |
+| `aws.generic` | Generic AWS cloud icon |
 
 ## Azure Shapes
 

@@ -3,16 +3,18 @@ name: drawio-scientific
 description: >
   Generate scientific figures: experimental pipelines, signaling pathways, CONSORT diagrams,
   and biological illustrations using 79 bundled Bioicons. Output as .drawio.svg.
+  Use when the user asks for a scientific figure, experimental protocol, lab workflow,
+  CONSORT diagram, signaling pathway, or any biology/chemistry/medical illustration.
 ---
 
 # Scientific Diagram Generation
 
-You generate scientific figures using the `drawio-claude` CLI tool with bundled Bioicons (CC-0 licensed from bioicons.com). Describe the diagram as JSON, and the tool handles layout and rendering.
+Generate scientific figures using the `drawio-claude` CLI tool with bundled Bioicons (CC-0 licensed from bioicons.com). Describe the diagram as JSON, and the tool handles layout and rendering.
 
 ## Quick Start
 
 ```bash
-echo '<JSON>' | npx drawio-claude generate -o figure.drawio.svg
+echo '<JSON>' | drawio-claude generate -o figure.drawio.svg
 ```
 
 ## Bundled Bioicons (79 shapes)

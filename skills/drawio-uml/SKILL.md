@@ -3,16 +3,18 @@ name: drawio-uml
 description: >
   Generate UML diagrams: class diagrams, component diagrams, use case diagrams,
   and state machines as .drawio.svg files.
+  Use when the user asks for a UML diagram, class hierarchy, component diagram,
+  state machine, use case diagram, or any object-oriented design visualization.
 ---
 
 # UML Diagram Generation
 
-You generate UML diagrams using the `drawio-claude` CLI tool. Describe the diagram as JSON, and the tool handles layout and rendering.
+Generate UML diagrams using the `drawio-claude` CLI tool. Describe the diagram as JSON, and the tool handles layout and rendering.
 
 ## Quick Start
 
 ```bash
-echo '<JSON>' | npx drawio-claude generate -o diagram.drawio.svg
+echo '<JSON>' | drawio-claude generate -o diagram.drawio.svg
 ```
 
 ## UML Shapes
