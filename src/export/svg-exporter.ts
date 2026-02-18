@@ -3,7 +3,7 @@
 
 import { writeFile } from "fs/promises";
 import { deflate } from "pako";
-import type { GraphModel, GraphNode, GraphEdge, GraphGroup } from "../core/graph-builder.js";
+import type { GraphModel, GraphNode, GraphEdge } from "../core/graph-builder.js";
 import { generateXml } from "../core/xml-generator.js";
 
 export function exportDrawioSvg(model: GraphModel): string {
@@ -44,8 +44,8 @@ function renderSvg(model: GraphModel): string {
 
   // Render groups (background rectangles)
   for (const group of model.groups) {
-    const pos = (group as GroupWithLayout).position ?? { x: 0, y: 0 };
-    const size = (group as GroupWithLayout).size ?? { width: 200, height: 200 };
+    const pos = group.position ?? { x: 0, y: 0 };
+    const size = group.size ?? { width: 200, height: 200 };
     const fill = extractStyleProp(group.style, "fillColor") ?? "#f5f5f5";
     const stroke = extractStyleProp(group.style, "strokeColor") ?? "#999999";
     const dashed = group.style.includes("dashed=1");
@@ -128,16 +128,28 @@ function renderSvg(model: GraphModel): string {
     }
   }
 
-  // Render edges
+  // Render edges — connect from nearest edge of source to nearest edge of target
   for (const edge of model.edges) {
     const sourceNode = model.nodes.find((n) => n.id === edge.sourceId);
     const targetNode = model.nodes.find((n) => n.id === edge.targetId);
 
     if (sourceNode?.position && targetNode?.position) {
-      const sx = (sourceNode.position.x ?? 0) + offsetX + sourceNode.size.width / 2;
-      const sy = (sourceNode.position.y ?? 0) + offsetY + sourceNode.size.height;
-      const tx = (targetNode.position.x ?? 0) + offsetX + targetNode.size.width / 2;
-      const ty = (targetNode.position.y ?? 0) + offsetY;
+      const srcCx = (sourceNode.position.x ?? 0) + offsetX + sourceNode.size.width / 2;
+      const srcCy = (sourceNode.position.y ?? 0) + offsetY + sourceNode.size.height / 2;
+      const tgtCx = (targetNode.position.x ?? 0) + offsetX + targetNode.size.width / 2;
+      const tgtCy = (targetNode.position.y ?? 0) + offsetY + targetNode.size.height / 2;
+
+      // Pick connection points on the edges of the rectangles
+      const [sx, sy] = getConnectionPoint(
+        sourceNode.position.x + offsetX, sourceNode.position.y + offsetY,
+        sourceNode.size.width, sourceNode.size.height,
+        tgtCx, tgtCy
+      );
+      const [tx, ty] = getConnectionPoint(
+        targetNode.position.x + offsetX, targetNode.position.y + offsetY,
+        targetNode.size.width, targetNode.size.height,
+        srcCx, srcCy
+      );
 
       const strokeColor = extractStyleProp(edge.style, "strokeColor") ?? "#666";
       const strokeWidth = extractStyleProp(edge.style, "strokeWidth") ?? "1";
@@ -177,9 +189,28 @@ function renderSvg(model: GraphModel): string {
   ].join("\n");
 }
 
-interface GroupWithLayout extends GraphGroup {
-  position?: { x: number; y: number };
-  size?: { width: number; height: number };
+
+function getConnectionPoint(
+  rx: number, ry: number, rw: number, rh: number,
+  toX: number, toY: number
+): [number, number] {
+  // Find where a line from the rect center to (toX, toY) intersects the rect border
+  const cx = rx + rw / 2;
+  const cy = ry + rh / 2;
+  const dx = toX - cx;
+  const dy = toY - cy;
+
+  if (dx === 0 && dy === 0) return [cx, cy];
+
+  const hw = rw / 2;
+  const hh = rh / 2;
+
+  // Scale factor to reach the rect border
+  const scaleX = dx !== 0 ? hw / Math.abs(dx) : Infinity;
+  const scaleY = dy !== 0 ? hh / Math.abs(dy) : Infinity;
+  const scale = Math.min(scaleX, scaleY);
+
+  return [cx + dx * scale, cy + dy * scale];
 }
 
 function computeBounds(model: GraphModel): {
@@ -203,7 +234,7 @@ function computeBounds(model: GraphModel): {
   }
 
   for (const group of model.groups) {
-    const g = group as GroupWithLayout;
+    const g = group;
     const x = g.position?.x ?? 0;
     const y = g.position?.y ?? 0;
     const w = g.size?.width ?? 200;

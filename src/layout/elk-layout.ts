@@ -41,8 +41,6 @@ function buildElkGraph(model: GraphModel, config: LayoutConfig): ElkNode {
 
   // Build a map of group children for nesting
   const groupChildren = new Map<string | null, (GraphNode | GraphGroup)[]>();
-
-  // Initialize with null parent (top-level)
   groupChildren.set(null, []);
 
   for (const group of model.groups) {
@@ -95,10 +93,6 @@ function buildElkGraph(model: GraphModel, config: LayoutConfig): ElkNode {
           id: String(group.cellId),
           children: nestedChildren,
           layoutOptions: {
-            "elk.algorithm": algorithm,
-            "elk.direction": direction,
-            "elk.spacing.nodeNode": String(config.spacing.node),
-            "elk.layered.spacing.nodeNodeBetweenLayers": String(config.spacing.layer),
             "elk.padding": "[top=40,left=20,bottom=20,right=20]",
           },
         };
@@ -109,7 +103,7 @@ function buildElkGraph(model: GraphModel, config: LayoutConfig): ElkNode {
     return elkNodes;
   }
 
-  // Build edges (all at root level for ELK)
+  // All edges at root — INCLUDE_CHILDREN handles cross-hierarchy routing
   const edges: ElkExtendedEdge[] = model.edges.map((edge) => ({
     id: String(edge.cellId),
     sources: [String(edge.sourceCellId)],
@@ -123,6 +117,7 @@ function buildElkGraph(model: GraphModel, config: LayoutConfig): ElkNode {
     layoutOptions: {
       "elk.algorithm": algorithm,
       "elk.direction": direction,
+      "elk.hierarchyHandling": "INCLUDE_CHILDREN",
       "elk.spacing.nodeNode": String(config.spacing.node),
       "elk.layered.spacing.nodeNodeBetweenLayers": String(config.spacing.layer),
       "elk.edgeRouting": "ORTHOGONAL",
@@ -131,28 +126,37 @@ function buildElkGraph(model: GraphModel, config: LayoutConfig): ElkNode {
 }
 
 function applyLayout(model: GraphModel, elkResult: ElkNode): GraphModel {
-  const positionMap = new Map<number, { x: number; y: number }>();
+  // ELK returns positions relative to parent containers.
+  // We need absolute positions for SVG rendering.
+  const absolutePositionMap = new Map<number, { x: number; y: number }>();
   const sizeMap = new Map<number, { width: number; height: number }>();
 
-  function collectPositions(elkNode: ElkNode) {
+  function collectPositions(elkNode: ElkNode, parentX: number, parentY: number) {
     if (elkNode.id !== "root") {
       const cellId = parseInt(elkNode.id, 10);
-      if (elkNode.x !== undefined && elkNode.y !== undefined) {
-        positionMap.set(cellId, { x: elkNode.x, y: elkNode.y });
-      }
+      const absX = parentX + (elkNode.x ?? 0);
+      const absY = parentY + (elkNode.y ?? 0);
+      absolutePositionMap.set(cellId, { x: absX, y: absY });
+
       if (elkNode.width !== undefined && elkNode.height !== undefined) {
         sizeMap.set(cellId, { width: elkNode.width, height: elkNode.height });
       }
-    }
-    for (const child of elkNode.children ?? []) {
-      collectPositions(child);
+
+      // Children are relative to this node's position
+      for (const child of elkNode.children ?? []) {
+        collectPositions(child, absX, absY);
+      }
+    } else {
+      for (const child of elkNode.children ?? []) {
+        collectPositions(child, parentX, parentY);
+      }
     }
   }
 
-  collectPositions(elkResult);
+  collectPositions(elkResult, 0, 0);
 
   const updatedNodes = model.nodes.map((node) => {
-    const pos = positionMap.get(node.cellId);
+    const pos = absolutePositionMap.get(node.cellId);
     if (pos && !node.position) {
       return { ...node, position: pos };
     }
@@ -160,7 +164,7 @@ function applyLayout(model: GraphModel, elkResult: ElkNode): GraphModel {
   });
 
   const updatedGroups = model.groups.map((group) => {
-    const pos = positionMap.get(group.cellId);
+    const pos = absolutePositionMap.get(group.cellId);
     const size = sizeMap.get(group.cellId);
     return { ...group, position: pos, size };
   });
@@ -168,6 +172,6 @@ function applyLayout(model: GraphModel, elkResult: ElkNode): GraphModel {
   return {
     ...model,
     nodes: updatedNodes,
-    groups: updatedGroups as GraphModel["groups"],
+    groups: updatedGroups,
   };
 }

@@ -17,13 +17,13 @@ export function generateXml(model: GraphModel): string {
 
   // Groups first (containers must exist before their children)
   for (const group of model.groups) {
-    lines.push(generateGroupCell(group));
+    lines.push(generateGroupCell(group, model.groups));
   }
 
   // Vertices (all nodes)
   for (const node of model.nodes) {
     const parentCellId = resolveParentCellId(node, model.groups);
-    lines.push(generateNodeCell(node, parentCellId));
+    lines.push(generateNodeCell(node, parentCellId, model.groups));
   }
 
   // Edges last (source/target must exist)
@@ -45,27 +45,36 @@ function resolveParentCellId(node: GraphNode, groups: GraphGroup[]): number {
   return group ? group.cellId : 1;
 }
 
-function generateGroupCell(group: GraphGroup): string {
-  // Groups get a default size that will be overridden by layout
-  const x = 0;
-  const y = 0;
-  const width = 200;
-  const height = 200;
+function generateGroupCell(group: GraphGroup, allGroups: GraphGroup[]): string {
+  const absX = group.position?.x ?? 0;
+  const absY = group.position?.y ?? 0;
+  const width = group.size?.width ?? 200;
+  const height = group.size?.height ?? 200;
+
+  // draw.io expects positions relative to parent group
+  const parentGroup = group.parent ? allGroups.find((g) => g.id === group.parent) : null;
+  const relX = parentGroup?.position ? absX - parentGroup.position.x : absX;
+  const relY = parentGroup?.position ? absY - parentGroup.position.y : absY;
 
   return [
     `        <mxCell id="${group.cellId}" value="${escapeAttr(group.label)}" style="${escapeAttr(group.style)}" vertex="1" parent="${group.parentCellId}">`,
-    `          <mxGeometry x="${x}" y="${y}" width="${width}" height="${height}" as="geometry"/>`,
+    `          <mxGeometry x="${relX}" y="${relY}" width="${width}" height="${height}" as="geometry"/>`,
     `        </mxCell>`,
   ].join("\n");
 }
 
-function generateNodeCell(node: GraphNode, parentCellId: number): string {
-  const x = node.position?.x ?? 0;
-  const y = node.position?.y ?? 0;
+function generateNodeCell(node: GraphNode, parentCellId: number, allGroups: GraphGroup[]): string {
+  const absX = node.position?.x ?? 0;
+  const absY = node.position?.y ?? 0;
+
+  // draw.io expects positions relative to parent group
+  const parentGroup = node.group ? allGroups.find((g) => g.id === node.group) : null;
+  const relX = parentGroup?.position ? absX - parentGroup.position.x : absX;
+  const relY = parentGroup?.position ? absY - parentGroup.position.y : absY;
 
   return [
     `        <mxCell id="${node.cellId}" value="${escapeAttr(node.label)}" style="${escapeAttr(node.style)}" vertex="1" parent="${parentCellId}">`,
-    `          <mxGeometry x="${x}" y="${y}" width="${node.size.width}" height="${node.size.height}" as="geometry"/>`,
+    `          <mxGeometry x="${relX}" y="${relY}" width="${node.size.width}" height="${node.size.height}" as="geometry"/>`,
     `        </mxCell>`,
   ].join("\n");
 }

@@ -32,6 +32,8 @@ export interface GraphGroup {
   parent: string | null;
   parentCellId: number;
   style: string;
+  position?: { x: number; y: number };
+  size?: { width: number; height: number };
 }
 
 export interface GraphModel {
