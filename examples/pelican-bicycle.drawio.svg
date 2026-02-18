@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg1.1.dtd">
+<svg content="eNrlmEtu2zAQhvc5haCsXYuyXo6jAHES15sCQV2gQHeMOJaIUKJB0w9130O0m+56sJ6gRyhF0ZINBG3hJmqCypvhkBzz/2YoCjzPt3PKwMr4UsY2EXhDeS9heEXAtnJO6JwCiW3XcYOe4/ZQ9A75Z87gzA9fOS76YFuyXICaCGuagH1xYlnnhOJU4NwqcK56boHRBBfWW0pokVrYGtOkTJiKTlVcM7aH9FQ1Od++FniRveEEmEW2sY0817UtUsZ2OPRsKxXVNFQbM/pR/QNyVGtFCSx1h+ScSbqoGwkvCkiktrEQfFO755zVURY4hcaYJZi1rfeUyEy1kOPUjinQNFOhIl85clx1KmOZYcI32rzDyX0q+KpQsU/n+jGylDDBudw1tM4rYEwzcOz+wx16IQIK+Ysxis0as5Va9o+v3z5ZU8BErUmWlRA1RnGAkVqiylHC+IqMNhmVMFvgBOKNAj3KZM5iNFI1wK444yI+9SZXg0k4WkrB78H4HDeKrtUoXkjjqeVpj84CcrU9wTllZTwFtgap8j4yeNBIrROEhO2BLGS3qurkA89BitLaVjWnmJaa7KbORaTMzGQhUDZW2UzNjANA/ZrQw8gGDbIx4PuGlk6cqnX0B4wmk3HoXT8HRsOaEWoh6XrdURocTclrKO128JiT8i9ra6KfQ25D59K7vOmYGwprbuEeN2+Pm4Z4HDi/Aff9y+eGV82JixvDbQGCqsAgYkPydud4SVsUmS3qug9v0uhoisF/RNGNnopi2FCcAZZHverCoe970XOghMyrLmgpBXuU3KMpRQ2lKS4Igzsslkex8tzq9wxYmYJCfosqfBRUw71TgWD2wjEhc3q6e5z8R+FU1aohY/QfqPV8/zLwjK/+0HT3tQ/0s6e9UgfEfKsu+UooutW3n8QiBalP698rFsCwpOs6yJG6ULe6Bl3pcjvQ5bW6wq50DTrQFbW6/K50eR3oCltdQVe6/G51RV3pCjrQNfwHdRh2q+vp6vC8395QVH3tNYy+1Ombm5qLk6qzujK6+Al1EJUW" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="350px" height="340px" viewBox="0 0 350 340">
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#666"/>
+    </marker>
+  </defs>
+  <g>
+    <ellipse cx="180" cy="50" rx="40" ry="30" fill="#4FC3F7" stroke="#0288D1" stroke-width="1"/>
+    <text x="180" y="54" text-anchor="middle" font-family="Helvetica" font-size="12" fill="#ffffff">🦅 Head</text>
+  </g>
+  <g>
+    <rect x="230" y="30" width="100" height="30" fill="#FFB74D" stroke="#0288D1" stroke-width="1" rx="6"/>
+    <text x="280" y="49" text-anchor="middle" font-family="Helvetica" font-size="12" fill="#ffffff">Beak</text>
+  </g>
+  <g>
+    <ellipse cx="180" cy="140" rx="70" ry="50" fill="#FFFFFF" stroke="#90A4AE" stroke-width="1"/>
+    <text x="180" y="144" text-anchor="middle" font-family="Helvetica" font-size="12" fill="#ffffff">Pelican Body</text>
+  </g>
+  <g>
+    <ellipse cx="80" cy="280" rx="40" ry="40" fill="#4FC3F7" stroke="#0288D1" stroke-width="1"/>
+    <text x="80" y="284" text-anchor="middle" font-family="Helvetica" font-size="12" fill="#ffffff">⚙</text>
+  </g>
+  <g>
+    <ellipse cx="260" cy="280" rx="40" ry="40" fill="#4FC3F7" stroke="#0288D1" stroke-width="1"/>
+    <text x="260" y="284" text-anchor="middle" font-family="Helvetica" font-size="12" fill="#ffffff">⚙</text>
+  </g>
+  <g>
+    <rect x="150" y="180" width="60" height="20" fill="#795548" stroke="#0288D1" stroke-width="1" rx="6"/>
+    <text x="180" y="194" text-anchor="middle" font-family="Helvetica" font-size="12" fill="#ffffff">Seat</text>
+  </g>
+  <g>
+    <rect x="20" y="170" width="70" height="20" fill="#424242" stroke="#0288D1" stroke-width="1" rx="6"/>
+    <text x="55" y="184" text-anchor="middle" font-family="Helvetica" font-size="12" fill="#ffffff">Handlebars</text>
+  </g>
+  <g>
+    <rect x="130" y="270" width="50" height="20" fill="#424242" stroke="#0288D1" stroke-width="1" rx="6"/>
+    <text x="155" y="284" text-anchor="middle" font-family="Helvetica" font-size="12" fill="#ffffff">Pedals</text>
+  </g>
+  <g>
+    <line x1="180" y1="80" x2="180" y2="90" stroke="#455A64" stroke-width="2" marker-end="url(#arrowhead)"/>
+  </g>
+  <g>
+    <line x1="180" y1="80" x2="280" y2="30" stroke="#455A64" stroke-width="2" marker-end="url(#arrowhead)"/>
+  </g>
+  <g>
+    <line x1="180" y1="190" x2="180" y2="180" stroke="#455A64" stroke-width="2" marker-end="url(#arrowhead)"/>
+  </g>
+  <g>
+    <line x1="55" y1="190" x2="80" y2="240" stroke="#455A64" stroke-width="2" marker-end="url(#arrowhead)"/>
+  </g>
+  <g>
+    <line x1="180" y1="200" x2="260" y2="240" stroke="#455A64" stroke-width="2" marker-end="url(#arrowhead)"/>
+  </g>
+  <g>
+    <line x1="180" y1="200" x2="55" y2="170" stroke="#455A64" stroke-width="2" marker-end="url(#arrowhead)"/>
+  </g>
+  <g>
+    <line x1="155" y1="290" x2="80" y2="240" stroke="#455A64" stroke-width="2" marker-end="url(#arrowhead)"/>
+  </g>
+  <g>
+    <line x1="155" y1="290" x2="260" y2="240" stroke="#455A64" stroke-width="2" marker-end="url(#arrowhead)"/>
+  </g>
+</svg>
