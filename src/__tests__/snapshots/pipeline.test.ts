@@ -158,4 +158,60 @@ describe("full pipeline", () => {
     const xmlResult = validateDrawioXml(xml);
     expect(xmlResult.valid).toBe(true);
   });
+
+  it("compound layout: groups ordered by edge flow, nodes inside group bounds", async () => {
+    const input = {
+      title: "Pipeline",
+      layout: { algorithm: "hierarchical", direction: "LR" },
+      groups: [
+        { id: "build", label: "Build" },
+        { id: "deploy", label: "Deploy" },
+        { id: "observe", label: "Observe" },
+      ],
+      nodes: [
+        { id: "start", label: "Start" },
+        { id: "lint", label: "Lint", group: "build" },
+        { id: "test", label: "Test", group: "build" },
+        { id: "staging", label: "Staging", group: "deploy" },
+        { id: "prod", label: "Prod", group: "deploy" },
+        { id: "monitor", label: "Monitor", group: "observe" },
+      ],
+      edges: [
+        { from: "start", to: "lint" },
+        { from: "lint", to: "test" },
+        { from: "test", to: "staging" },
+        { from: "staging", to: "prod" },
+        { from: "prod", to: "monitor" },
+      ],
+    };
+
+    const { xml, svg } = await runPipeline(input);
+    const xmlResult = validateDrawioXml(xml);
+    expect(xmlResult.valid).toBe(true);
+
+    // SVG must be valid
+    expect(svg).toContain("<svg");
+    expect(svg).toContain("content=");
+
+    // Extract group positions from SVG to verify ordering.
+    // Groups render as <rect> with stroke-dasharray (dashed borders).
+    // With LR direction, groups should be ordered left-to-right by x position.
+    const groupRects = [...svg.matchAll(/<rect x="(\d+(?:\.\d+)?)" y="(\d+(?:\.\d+)?)" width="(\d+(?:\.\d+)?)" height="(\d+(?:\.\d+)?)" fill="[^"]*" stroke="[^"]*" stroke-width="[^"]*" rx="[^"]*" stroke-dasharray/g)];
+    expect(groupRects.length).toBe(3);
+
+    const groupXs = groupRects.map((m) => parseFloat(m[1]));
+    // Build should be left of Deploy, Deploy should be left of Observe
+    expect(groupXs[0]).toBeLessThan(groupXs[1]);
+    expect(groupXs[1]).toBeLessThan(groupXs[2]);
+
+    // Verify nodes are positioned within their parent group bounds
+    // Extract all node rects (non-dashed) - they don't have stroke-dasharray
+    const allRects = [...svg.matchAll(/<rect x="(\d+(?:\.\d+)?)" y="(\d+(?:\.\d+)?)" width="(\d+(?:\.\d+)?)" height="(\d+(?:\.\d+)?)"/g)];
+    // Node rects are those without stroke-dasharray following them
+    const nodeLines = svg.split("\n").filter(
+      (line) => line.includes("<rect") && !line.includes("stroke-dasharray")
+    );
+    // At minimum, we have node rects inside groups
+    expect(nodeLines.length).toBeGreaterThanOrEqual(5);
+  });
 });

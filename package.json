@@ -1,6 +1,6 @@
 {
   "name": "drawio-claude",
-  "version": "0.1.0",
+  "version": "0.0.1",
   "description": "Generate professional draw.io diagrams from JSON graph descriptions",
   "type": "module",
   "bin": {

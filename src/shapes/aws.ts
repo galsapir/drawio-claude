@@ -58,4 +58,6 @@ export const awsShapes: Record<string, string> = {
     "outlineConnect=0;fontColor=#232F3E;gradientColor=none;strokeColor=none;fillColor=#E7157B;labelBackgroundColor=#ffffff;align=center;fontStyle=1;fontSize=12;whiteSpace=wrap;html=1;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.cloudformation;",
   "aws.sagemaker":
     "outlineConnect=0;fontColor=#232F3E;gradientColor=none;strokeColor=none;fillColor=#01A88D;labelBackgroundColor=#ffffff;align=center;fontStyle=1;fontSize=12;whiteSpace=wrap;html=1;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.sagemaker;",
+  "aws.generic":
+    "outlineConnect=0;fontColor=#232F3E;gradientColor=none;strokeColor=none;fillColor=#ED7100;labelBackgroundColor=#ffffff;align=center;fontStyle=1;fontSize=12;whiteSpace=wrap;html=1;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.aws_cloud;",
 };
