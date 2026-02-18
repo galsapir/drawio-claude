@@ -1,0 +1,61 @@
+// ABOUTME: AWS shape definitions mapping type names to draw.io mxgraph.aws4 style strings.
+// ABOUTME: Covers the ~30 most commonly used AWS service icons.
+
+export const awsShapes: Record<string, string> = {
+  "aws.lambda":
+    "outlineConnect=0;fontColor=#232F3E;gradientColor=none;strokeColor=none;fillColor=#ED7100;labelBackgroundColor=#ffffff;align=center;fontStyle=1;fontSize=12;whiteSpace=wrap;html=1;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.lambda;",
+  "aws.ec2":
+    "outlineConnect=0;fontColor=#232F3E;gradientColor=none;strokeColor=none;fillColor=#ED7100;labelBackgroundColor=#ffffff;align=center;fontStyle=1;fontSize=12;whiteSpace=wrap;html=1;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.ec2;",
+  "aws.s3":
+    "outlineConnect=0;fontColor=#232F3E;gradientColor=none;strokeColor=none;fillColor=#3F8624;labelBackgroundColor=#ffffff;align=center;fontStyle=1;fontSize=12;whiteSpace=wrap;html=1;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.s3;",
+  "aws.rds":
+    "outlineConnect=0;fontColor=#232F3E;gradientColor=none;strokeColor=none;fillColor=#C925D1;labelBackgroundColor=#ffffff;align=center;fontStyle=1;fontSize=12;whiteSpace=wrap;html=1;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.rds;",
+  "aws.api-gateway":
+    "outlineConnect=0;fontColor=#232F3E;gradientColor=none;strokeColor=none;fillColor=#E7157B;labelBackgroundColor=#ffffff;align=center;fontStyle=1;fontSize=12;whiteSpace=wrap;html=1;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.api_gateway;",
+  "aws.dynamodb":
+    "outlineConnect=0;fontColor=#232F3E;gradientColor=none;strokeColor=none;fillColor=#C925D1;labelBackgroundColor=#ffffff;align=center;fontStyle=1;fontSize=12;whiteSpace=wrap;html=1;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.dynamodb;",
+  "aws.sqs":
+    "outlineConnect=0;fontColor=#232F3E;gradientColor=none;strokeColor=none;fillColor=#E7157B;labelBackgroundColor=#ffffff;align=center;fontStyle=1;fontSize=12;whiteSpace=wrap;html=1;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.sqs;",
+  "aws.sns":
+    "outlineConnect=0;fontColor=#232F3E;gradientColor=none;strokeColor=none;fillColor=#E7157B;labelBackgroundColor=#ffffff;align=center;fontStyle=1;fontSize=12;whiteSpace=wrap;html=1;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.sns;",
+  "aws.cloudfront":
+    "outlineConnect=0;fontColor=#232F3E;gradientColor=none;strokeColor=none;fillColor=#8C4FFF;labelBackgroundColor=#ffffff;align=center;fontStyle=1;fontSize=12;whiteSpace=wrap;html=1;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.cloudfront;",
+  "aws.ecs":
+    "outlineConnect=0;fontColor=#232F3E;gradientColor=none;strokeColor=none;fillColor=#ED7100;labelBackgroundColor=#ffffff;align=center;fontStyle=1;fontSize=12;whiteSpace=wrap;html=1;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.ecs;",
+  "aws.eks":
+    "outlineConnect=0;fontColor=#232F3E;gradientColor=none;strokeColor=none;fillColor=#ED7100;labelBackgroundColor=#ffffff;align=center;fontStyle=1;fontSize=12;whiteSpace=wrap;html=1;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.eks;",
+  "aws.fargate":
+    "outlineConnect=0;fontColor=#232F3E;gradientColor=none;strokeColor=none;fillColor=#ED7100;labelBackgroundColor=#ffffff;align=center;fontStyle=1;fontSize=12;whiteSpace=wrap;html=1;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.fargate;",
+  "aws.elb":
+    "outlineConnect=0;fontColor=#232F3E;gradientColor=none;strokeColor=none;fillColor=#8C4FFF;labelBackgroundColor=#ffffff;align=center;fontStyle=1;fontSize=12;whiteSpace=wrap;html=1;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.elastic_load_balancing;",
+  "aws.vpc":
+    "outlineConnect=0;fontColor=#232F3E;gradientColor=none;strokeColor=none;fillColor=#8C4FFF;labelBackgroundColor=#ffffff;align=center;fontStyle=1;fontSize=12;whiteSpace=wrap;html=1;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.vpc;",
+  "aws.route53":
+    "outlineConnect=0;fontColor=#232F3E;gradientColor=none;strokeColor=none;fillColor=#8C4FFF;labelBackgroundColor=#ffffff;align=center;fontStyle=1;fontSize=12;whiteSpace=wrap;html=1;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.route_53;",
+  "aws.cloudwatch":
+    "outlineConnect=0;fontColor=#232F3E;gradientColor=none;strokeColor=none;fillColor=#E7157B;labelBackgroundColor=#ffffff;align=center;fontStyle=1;fontSize=12;whiteSpace=wrap;html=1;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.cloudwatch;",
+  "aws.iam":
+    "outlineConnect=0;fontColor=#232F3E;gradientColor=none;strokeColor=none;fillColor=#DD344C;labelBackgroundColor=#ffffff;align=center;fontStyle=1;fontSize=12;whiteSpace=wrap;html=1;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.identity_and_access_management;",
+  "aws.cognito":
+    "outlineConnect=0;fontColor=#232F3E;gradientColor=none;strokeColor=none;fillColor=#DD344C;labelBackgroundColor=#ffffff;align=center;fontStyle=1;fontSize=12;whiteSpace=wrap;html=1;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.cognito;",
+  "aws.stepfunctions":
+    "outlineConnect=0;fontColor=#232F3E;gradientColor=none;strokeColor=none;fillColor=#E7157B;labelBackgroundColor=#ffffff;align=center;fontStyle=1;fontSize=12;whiteSpace=wrap;html=1;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.step_functions;",
+  "aws.eventbridge":
+    "outlineConnect=0;fontColor=#232F3E;gradientColor=none;strokeColor=none;fillColor=#E7157B;labelBackgroundColor=#ffffff;align=center;fontStyle=1;fontSize=12;whiteSpace=wrap;html=1;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.eventbridge;",
+  "aws.kinesis":
+    "outlineConnect=0;fontColor=#232F3E;gradientColor=none;strokeColor=none;fillColor=#8C4FFF;labelBackgroundColor=#ffffff;align=center;fontStyle=1;fontSize=12;whiteSpace=wrap;html=1;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.kinesis;",
+  "aws.redshift":
+    "outlineConnect=0;fontColor=#232F3E;gradientColor=none;strokeColor=none;fillColor=#C925D1;labelBackgroundColor=#ffffff;align=center;fontStyle=1;fontSize=12;whiteSpace=wrap;html=1;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.redshift;",
+  "aws.elasticache":
+    "outlineConnect=0;fontColor=#232F3E;gradientColor=none;strokeColor=none;fillColor=#C925D1;labelBackgroundColor=#ffffff;align=center;fontStyle=1;fontSize=12;whiteSpace=wrap;html=1;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.elasticache;",
+  "aws.secrets-manager":
+    "outlineConnect=0;fontColor=#232F3E;gradientColor=none;strokeColor=none;fillColor=#DD344C;labelBackgroundColor=#ffffff;align=center;fontStyle=1;fontSize=12;whiteSpace=wrap;html=1;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.secrets_manager;",
+  "aws.ecr":
+    "outlineConnect=0;fontColor=#232F3E;gradientColor=none;strokeColor=none;fillColor=#ED7100;labelBackgroundColor=#ffffff;align=center;fontStyle=1;fontSize=12;whiteSpace=wrap;html=1;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.ecr;",
+  "aws.codepipeline":
+    "outlineConnect=0;fontColor=#232F3E;gradientColor=none;strokeColor=none;fillColor=#C925D1;labelBackgroundColor=#ffffff;align=center;fontStyle=1;fontSize=12;whiteSpace=wrap;html=1;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.codepipeline;",
+  "aws.cloudformation":
+    "outlineConnect=0;fontColor=#232F3E;gradientColor=none;strokeColor=none;fillColor=#E7157B;labelBackgroundColor=#ffffff;align=center;fontStyle=1;fontSize=12;whiteSpace=wrap;html=1;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.cloudformation;",
+  "aws.sagemaker":
+    "outlineConnect=0;fontColor=#232F3E;gradientColor=none;strokeColor=none;fillColor=#01A88D;labelBackgroundColor=#ffffff;align=center;fontStyle=1;fontSize=12;whiteSpace=wrap;html=1;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.sagemaker;",
+};

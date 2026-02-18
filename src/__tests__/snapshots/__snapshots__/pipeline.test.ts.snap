@@ -1,0 +1,35 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`full pipeline > generates valid XML for a simple flowchart 1`] = `
+"<mxfile host="drawio-claude" modified="STABLE" type="device">
+  <diagram name="Simple Flowchart" id="diagram-1">
+    <mxGraphModel dx="1422" dy="794" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1100" pageHeight="850" math="0" shadow="0" background="#ffffff">
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+        <mxCell id="2" value="Start" style="rounded=1;whiteSpace=wrap;html=1;arcSize=50;fillColor=#dae8fc;strokeColor=#6c8ebf;fontColor=#333333;fontSize=12;fontFamily=Helvetica;" vertex="1" parent="1">
+          <mxGeometry x="12" y="12" width="120" height="60" as="geometry"/>
+        </mxCell>
+        <mxCell id="3" value="Process Data" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontColor=#333333;fontSize=12;fontFamily=Helvetica;" vertex="1" parent="1">
+          <mxGeometry x="12" y="152" width="120" height="60" as="geometry"/>
+        </mxCell>
+        <mxCell id="4" value="Valid?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontColor=#333333;fontSize=12;fontFamily=Helvetica;" vertex="1" parent="1">
+          <mxGeometry x="12" y="292" width="120" height="60" as="geometry"/>
+        </mxCell>
+        <mxCell id="5" value="End" style="rounded=1;whiteSpace=wrap;html=1;arcSize=50;fillColor=#dae8fc;strokeColor=#6c8ebf;fontColor=#333333;fontSize=12;fontFamily=Helvetica;" vertex="1" parent="1">
+          <mxGeometry x="12" y="432" width="120" height="60" as="geometry"/>
+        </mxCell>
+        <mxCell id="6" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#666666;strokeWidth=1;fontColor=#333333;fontSize=11;" edge="1" source="2" target="3" parent="1">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="7" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#666666;strokeWidth=1;fontColor=#333333;fontSize=11;" edge="1" source="3" target="4" parent="1">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="8" value="Yes" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#666666;strokeWidth=1;fontColor=#333333;fontSize=11;" edge="1" source="4" target="5" parent="1">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>"
+`;
