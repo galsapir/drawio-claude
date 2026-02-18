@@ -83,8 +83,7 @@ function renderSvg(model: GraphModel): string {
         `  <g>`,
         `    <polygon points="${cx},${y} ${x + w},${cy} ${cx},${y + h} ${x},${cy}" ` +
           `fill="${fill}" stroke="${stroke}" stroke-width="1"/>`,
-        `    <text x="${cx}" y="${cy + parseInt(fontSize) / 3}" text-anchor="middle" ` +
-          `font-family="Helvetica" font-size="${fontSize}" fill="${fontColor}">${escapeXmlText(unescapeXml(node.label))}</text>`,
+        renderSvgText(node.label, cx, cy, fontSize, fontColor),
         `  </g>`
       );
     } else if (isEllipse || node.style.includes("shape=cloud")) {
@@ -94,8 +93,7 @@ function renderSvg(model: GraphModel): string {
         `  <g>`,
         `    <ellipse cx="${cx}" cy="${cy}" rx="${w / 2}" ry="${h / 2}" ` +
           `fill="${fill}" stroke="${stroke}" stroke-width="1"/>`,
-        `    <text x="${cx}" y="${cy + parseInt(fontSize) / 3}" text-anchor="middle" ` +
-          `font-family="Helvetica" font-size="${fontSize}" fill="${fontColor}">${escapeXmlText(unescapeXml(node.label))}</text>`,
+        renderSvgText(node.label, cx, cy, fontSize, fontColor),
         `  </g>`
       );
     } else if (isCylinder) {
@@ -110,8 +108,7 @@ function renderSvg(model: GraphModel): string {
           `fill="${fill}" stroke="${stroke}" stroke-width="1"/>`,
         `    <ellipse cx="${x + w / 2}" cy="${y + ellipseRy}" rx="${w / 2}" ry="${ellipseRy}" ` +
           `fill="${fill}" stroke="${stroke}" stroke-width="1"/>`,
-        `    <text x="${x + w / 2}" y="${y + h / 2 + parseInt(fontSize) / 3}" text-anchor="middle" ` +
-          `font-family="Helvetica" font-size="${fontSize}" fill="${fontColor}">${escapeXmlText(unescapeXml(node.label))}</text>`,
+        renderSvgText(node.label, x + w / 2, y + h / 2, fontSize, fontColor),
         `  </g>`
       );
     } else {
@@ -121,8 +118,7 @@ function renderSvg(model: GraphModel): string {
         `  <g>`,
         `    <rect x="${x}" y="${y}" width="${w}" height="${h}" ` +
           `fill="${fill}" stroke="${stroke}" stroke-width="1" rx="${rx}"/>`,
-        `    <text x="${x + w / 2}" y="${y + h / 2 + parseInt(fontSize) / 3}" text-anchor="middle" ` +
-          `font-family="Helvetica" font-size="${fontSize}" fill="${fontColor}">${escapeXmlText(unescapeXml(node.label))}</text>`,
+        renderSvgText(node.label, x + w / 2, y + h / 2, fontSize, fontColor),
         `  </g>`
       );
     }
@@ -256,6 +252,30 @@ function extractStyleProp(style: string, prop: string): string | null {
   const regex = new RegExp(`${prop}=([^;]+)`);
   const match = style.match(regex);
   return match?.[1] ?? null;
+}
+
+function renderSvgText(
+  label: string, cx: number, cy: number,
+  fontSize: string, fontColor: string
+): string {
+  const text = unescapeXml(label);
+  const lines = text.split("\n");
+  const size = parseInt(fontSize);
+  const lineHeight = size * 1.4;
+
+  if (lines.length === 1) {
+    return `    <text x="${cx}" y="${cy + size / 3}" text-anchor="middle" ` +
+      `font-family="Helvetica" font-size="${fontSize}" fill="${fontColor}">${escapeXmlText(text)}</text>`;
+  }
+
+  const totalHeight = (lines.length - 1) * lineHeight;
+  const startY = cy - totalHeight / 2 + size / 3;
+  const tspans = lines.map((line, i) =>
+    `<tspan x="${cx}" dy="${i === 0 ? 0 : lineHeight}">${escapeXmlText(line)}</tspan>`
+  ).join("");
+
+  return `    <text x="${cx}" y="${startY}" text-anchor="middle" ` +
+    `font-family="Helvetica" font-size="${fontSize}" fill="${fontColor}">${tspans}</text>`;
 }
 
 function escapeAttr(str: string): string {
