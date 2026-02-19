@@ -68,8 +68,8 @@ function renderSvg(model: GraphModel): string {
     const h = node.size.height;
     const fill = extractStyleProp(node.style, "fillColor") ?? "#dae8fc";
     const stroke = extractStyleProp(node.style, "strokeColor") ?? "#6c8ebf";
-    const fontColor = extractStyleProp(node.style, "fontColor") ?? "#333";
-    const fontSize = extractStyleProp(node.style, "fontSize") ?? "12";
+    const strokeWidth = extractStyleProp(node.style, "strokeWidth") ?? "1";
+    const isDashed = node.style.includes("dashed=1");
     const isRounded = node.style.includes("rounded=1");
     const isDecision = node.style.includes("rhombus");
     const isCylinder = node.style.includes("cylinder");
@@ -82,8 +82,8 @@ function renderSvg(model: GraphModel): string {
       elements.push(
         `  <g>`,
         `    <polygon points="${cx},${y} ${x + w},${cy} ${cx},${y + h} ${x},${cy}" ` +
-          `fill="${fill}" stroke="${stroke}" stroke-width="1"/>`,
-        renderSvgText(node.label, cx, cy, fontSize, fontColor),
+          `fill="${fill}" stroke="${stroke}" stroke-width="${strokeWidth}"/>`,
+        renderSvgText(node.label, x, y, w, h, node.style),
         `  </g>`
       );
     } else if (isEllipse || node.style.includes("shape=cloud")) {
@@ -92,8 +92,8 @@ function renderSvg(model: GraphModel): string {
       elements.push(
         `  <g>`,
         `    <ellipse cx="${cx}" cy="${cy}" rx="${w / 2}" ry="${h / 2}" ` +
-          `fill="${fill}" stroke="${stroke}" stroke-width="1"/>`,
-        renderSvgText(node.label, cx, cy, fontSize, fontColor),
+          `fill="${fill}" stroke="${stroke}" stroke-width="${strokeWidth}"/>`,
+        renderSvgText(node.label, x, y, w, h, node.style),
         `  </g>`
       );
     } else if (isCylinder) {
@@ -105,10 +105,10 @@ function renderSvg(model: GraphModel): string {
           `A${w / 2},${ellipseRy} 0 0,1 ${x + w},${y + ellipseRy} ` +
           `V${y + h - ellipseRy} ` +
           `A${w / 2},${ellipseRy} 0 0,1 ${x},${y + h - ellipseRy} Z" ` +
-          `fill="${fill}" stroke="${stroke}" stroke-width="1"/>`,
+          `fill="${fill}" stroke="${stroke}" stroke-width="${strokeWidth}"/>`,
         `    <ellipse cx="${x + w / 2}" cy="${y + ellipseRy}" rx="${w / 2}" ry="${ellipseRy}" ` +
-          `fill="${fill}" stroke="${stroke}" stroke-width="1"/>`,
-        renderSvgText(node.label, x + w / 2, y + h / 2, fontSize, fontColor),
+          `fill="${fill}" stroke="${stroke}" stroke-width="${strokeWidth}"/>`,
+        renderSvgText(node.label, x, y, w, h, node.style),
         `  </g>`
       );
     } else {
@@ -117,8 +117,8 @@ function renderSvg(model: GraphModel): string {
       elements.push(
         `  <g>`,
         `    <rect x="${x}" y="${y}" width="${w}" height="${h}" ` +
-          `fill="${fill}" stroke="${stroke}" stroke-width="1" rx="${rx}"/>`,
-        renderSvgText(node.label, x + w / 2, y + h / 2, fontSize, fontColor),
+          `fill="${fill}" stroke="${stroke}" stroke-width="${strokeWidth}" rx="${rx}"${isDashed ? ' stroke-dasharray="6,3"' : ""}/>`,
+        renderSvgText(node.label, x, y, w, h, node.style),
         `  </g>`
       );
     }
@@ -255,27 +255,95 @@ function extractStyleProp(style: string, prop: string): string | null {
 }
 
 function renderSvgText(
-  label: string, cx: number, cy: number,
-  fontSize: string, fontColor: string
+  label: string,
+  cellX: number, cellY: number,
+  cellW: number, cellH: number,
+  style: string
 ): string {
   const text = unescapeXml(label);
-  const lines = text.split("\n");
-  const size = parseInt(fontSize);
-  const lineHeight = size * 1.4;
+  if (!text.trim()) return "";
 
-  if (lines.length === 1) {
-    return `    <text x="${cx}" y="${cy + size / 3}" text-anchor="middle" ` +
-      `font-family="Helvetica" font-size="${fontSize}" fill="${fontColor}">${escapeXmlText(text)}</text>`;
+  const fontSize = parseInt(extractStyleProp(style, "fontSize") ?? "12");
+  const fontColor = extractStyleProp(style, "fontColor") ?? "#333";
+  const align = extractStyleProp(style, "align") ?? "center";
+  const vAlign = extractStyleProp(style, "verticalAlign") ?? "middle";
+  const spacingLeft = parseInt(extractStyleProp(style, "spacingLeft") ?? "5");
+  const spacingRight = parseInt(extractStyleProp(style, "spacingRight") ?? "5");
+  const spacingTop = parseInt(extractStyleProp(style, "spacingTop") ?? "5");
+  const spacingBottom = parseInt(extractStyleProp(style, "spacingBottom") ?? "5");
+  const fontStyleNum = parseInt(extractStyleProp(style, "fontStyle") ?? "0");
+  const isBold = (fontStyleNum & 1) !== 0;
+  const isItalic = (fontStyleNum & 2) !== 0;
+
+  // Available text area
+  const availWidth = cellW - spacingLeft - spacingRight;
+
+  // Estimate characters per line (Helvetica average char width)
+  const avgCharWidth = fontSize * (isBold ? 0.65 : 0.58);
+  const charsPerLine = Math.max(10, Math.floor(availWidth / avgCharWidth));
+
+  // Handle explicit newlines, then word-wrap each segment
+  const segments = text.split("\n");
+  const allLines: string[] = [];
+  for (const segment of segments) {
+    allLines.push(...wordWrap(segment, charsPerLine));
   }
 
-  const totalHeight = (lines.length - 1) * lineHeight;
-  const startY = cy - totalHeight / 2 + size / 3;
-  const tspans = lines.map((line, i) =>
-    `<tspan x="${cx}" dy="${i === 0 ? 0 : lineHeight}">${escapeXmlText(line)}</tspan>`
+  const lineHeight = fontSize * 1.3;
+  const totalTextHeight = allLines.length * lineHeight;
+
+  // Horizontal positioning
+  const textAnchor = align === "left" ? "start" : align === "right" ? "end" : "middle";
+  let textX: number;
+  if (align === "left") textX = cellX + spacingLeft;
+  else if (align === "right") textX = cellX + cellW - spacingRight;
+  else textX = cellX + cellW / 2;
+
+  // Vertical positioning (baseline of first line)
+  let startY: number;
+  if (vAlign === "top") {
+    startY = cellY + spacingTop + fontSize * 0.85;
+  } else if (vAlign === "bottom") {
+    startY = cellY + cellH - spacingBottom - totalTextHeight + fontSize * 0.85;
+  } else {
+    startY = cellY + (cellH - totalTextHeight) / 2 + fontSize * 0.85;
+  }
+
+  // Font attributes
+  const fontAttrs = [
+    `font-family="Helvetica"`,
+    `font-size="${fontSize}"`,
+    isBold ? `font-weight="bold"` : "",
+    isItalic ? `font-style="italic"` : "",
+    `fill="${fontColor}"`,
+  ].filter(Boolean).join(" ");
+
+  const tspans = allLines.map((line, i) =>
+    `<tspan x="${textX}" dy="${i === 0 ? 0 : lineHeight}">${escapeXmlText(line)}</tspan>`
   ).join("");
 
-  return `    <text x="${cx}" y="${startY}" text-anchor="middle" ` +
-    `font-family="Helvetica" font-size="${fontSize}" fill="${fontColor}">${tspans}</text>`;
+  return `    <text x="${textX}" y="${startY}" text-anchor="${textAnchor}" ${fontAttrs}>${tspans}</text>`;
+}
+
+function wordWrap(text: string, maxChars: number): string[] {
+  if (!text.trim()) return [""];
+  const words = text.split(/\s+/);
+  const lines: string[] = [];
+  let currentLine = "";
+
+  for (const word of words) {
+    if (currentLine === "") {
+      currentLine = word;
+    } else if (currentLine.length + 1 + word.length <= maxChars) {
+      currentLine += " " + word;
+    } else {
+      lines.push(currentLine);
+      currentLine = word;
+    }
+  }
+  if (currentLine) lines.push(currentLine);
+
+  return lines.length > 0 ? lines : [""];
 }
 
 function escapeAttr(str: string): string {
