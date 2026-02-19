@@ -6,3 +6,6 @@ dist/
 # Generated diagrams in project root (keep examples/ tracked)
 /*.drawio.svg
 /*.drawio
+/*.json
+!/package.json
+!/tsconfig.json
